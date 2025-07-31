@@ -1,0 +1,195 @@
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 750px;
+  margin: 30px auto;
+  margin-bottom: 0;
+  padding: 25px;
+  background-color: #1e1e1e;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(100, 100, 255, 0.05);
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #a78bfa;
+  margin: 10px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  color: #cccccc;
+}
+
+.marge {
+      margin-bottom: 15px;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+  width: 97.5%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #2a2a2a;
+  color: #fff;
+  transition: background-color 0.3s ease;
+  appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  background-color: #333;
+  outline: none;
+  appearance: none;
+}
+
+#repairTarget{
+    width: 100%;
+}
+
+button {
+  background-color: #6a5acd;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5849c2;
+}
+
+  .autocomplete-list {
+    position: absolute;
+    background: #222;
+    border: 1px solid #555;
+    border-radius: 6px;
+    max-height: 140px;
+    overflow-y: auto;
+    color: #eee;
+    font-size: 0.9rem;
+    z-index: 1000;
+    width: 100%;
+  }
+  .autocomplete-item {
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .autocomplete-item:hover {
+    background-color: #6a5acd;
+  }
+  .member-entry {
+    position: relative;
+  }
+
+.remove-btn {
+  background-color: rgb(228, 39, 39);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 1.2rem;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  background-color: rgb(140, 6, 6);
+}
+
+.member-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: #2a2a2a;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s;
+}
+
+.member:hover {
+  background-color: #343434;
+}
+
+.paid {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.repair-highlight {
+  background-color: #3a2d5e;
+  border-left: 5px solid #a78bfa;
+  color: #f5e9ff;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #444;
+  margin: 25px 0;
+}
+
+.center {
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  color: #a78bfa;
+  margin-bottom: 15px;
+}
+
+option {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #121212;
+  font-size: 14px;
+  color: #e0e0e0;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}

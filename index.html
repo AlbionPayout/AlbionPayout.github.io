@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+  <meta charset="UTF-8">
+  <title>Payout Albion</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+  <datalist id="member-suggestions"></datalist>
+
+</head>
+<body>
+
+  <datalist id="member-suggestions"></datalist>
+
+
+<div class="container">
+  <h1>Oh oui Daddy fais moi mal</h1>
+  <img src="daddy.png" alt="">
+
+  <label class="marge">Total du coffre :</label>
+
+  <input type="number" id="chestTotal" placeholder="Entrez la valeur totale du coffre">
+
+  </br></br>
+
+  <label class="marge">Coût des réparations :</label>
+
+<input type="number" id="repairCost" placeholder="Entrez la valeur de la réparation">
+
+  </br></br>
+
+  <label class="marge">Membres :</label>
+
+  <div id="membersList"></div>
+
+  <div class="center">
+    <button onclick="addMember()">Ajouter un membre</button>
+  </div>
+
+  <hr>
+
+  <label class="marge">Membre à rembourser :</label>
+<select id="repairTarget">
+  <option value="">-- Aucun --</option>
+</select>
+
+  <div class="center">
+    <button onclick="calculateSplit()">Calculer</button>
+  </div>
+
+  <div id="result" class="center"></div>
+</div>
+
+<footer>
+  <p>© 2025 Simulacrum (et un peu d'IA).</p>
+</footer>
+
+</body>
+</html>
