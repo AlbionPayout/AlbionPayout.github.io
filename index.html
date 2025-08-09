@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
   <meta charset="UTF-8">
   <title>Payout Albion</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
-  <datalist id="member-suggestions"></datalist>
-
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-  <datalist id="member-suggestions"></datalist>
-
 
 <div class="container">
   <h1>Albion Payout</h1>
 
-  <label class="marge">Total du coffre :</label>
+  <label class="marge">Nom de la guilde :</label>
+  <div class="guild-input-wrapper">
+    <input type="text" id="guildName" placeholder="Entrez le nom de la guilde">
+    <span id="guildStatus"></span>
+  </div>
 
+  </br>
+
+  <label class="marge">Total du coffre :</label>
   <input type="number" id="chestTotal" placeholder="Entrez la valeur totale du coffre">
 
   </br></br>
 
   <label class="marge">Coût des réparations :</label>
-
-<input type="number" id="repairCost" placeholder="Entrez la valeur de la réparation">
+  <input type="number" id="repairCost" placeholder="Entrez la valeur de la réparation">
 
   </br></br>
 
   <label class="marge">Membres :</label>
-
   <div id="membersList"></div>
 
   <div class="center">
@@ -40,9 +39,9 @@
   <hr>
 
   <label class="marge">Membre à rembourser :</label>
-<select id="repairTarget">
-  <option value="">-- Aucun --</option>
-</select>
+  <select id="repairTarget">
+    <option value="">-- Aucun --</option>
+  </select>
 
   <div class="center">
     <button onclick="calculateSplit()">Calculer</button>
@@ -57,4 +56,3 @@
 
 </body>
 </html>
-
