@@ -129,6 +129,7 @@ button:hover {
 }
 
 .member-entry {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -192,4 +193,63 @@ footer {
   width: 100%;
   bottom: 0;
   left: 0;
+}
+
+.guild-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#guildStatus {
+  font-size: 1.2rem;
+}
+
+.guild-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #222;
+  border: 1px solid #555;
+  border-radius: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  color: #eee;
+  font-size: 0.9rem;
+  z-index: 1000;
+  width: 100%;
+}
+
+.guild-autocomplete div {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.guild-autocomplete div:hover {
+  background-color: #6a5acd;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: #222;
+  border: 1px solid #555;
+  border-radius: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  color: #eee;
+  font-size: 0.9rem;
+  z-index: 1000;
+  width: calc(100% - 40px);
+}
+
+.autocomplete-item {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #6a5acd;
 }
