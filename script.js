@@ -1,70 +1,114 @@
 let memberId = 0;
-  let guildMembers = [];
+let guildMembers = [];
 
-  async function fetchGuildMembers() {
-    try {
-      const searchRes = await fetch("https://corsproxy.io/?https://gameinfo-ams.albiononline.com/api/gameinfo/search?q=Les Chomeurs");
-      const searchData = await searchRes.json();
-      const guild = searchData.guilds.find(g => g.Name === "Les Chomeurs");
-      if (!guild) {
-        alert("Guilde 'Les Chomeurs' non trouvée !");
-        return;
-      }
+async function searchGuilds(query) {
+  if (!query.trim()) return [];
+  try {
+    const res = await fetch(`https://corsproxy.io/?https://gameinfo-ams.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    return data.guilds || [];
+  } catch {
+    return [];
+  }
+}
 
-      const guildId = guild.Id;
-      const memberRes = await fetch(`https://corsproxy.io/?https://gameinfo-ams.albiononline.com/api/gameinfo/guilds/${guildId}/members`);
-      const members = await memberRes.json();
-
-      guildMembers = members.map(m => m.Name).sort();
-
-      const dataList = document.getElementById("member-suggestions");
-      dataList.innerHTML = '';
-      guildMembers.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        dataList.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Erreur API Albion:", error);
-      alert("Impossible de récupérer les membres de la guilde.");
+async function fetchGuildMembers(guildName) {
+  if (!guildName || guildName.trim() === "") {
+    guildMembers = [];
+    return false;
+  }
+  try {
+    const guilds = await searchGuilds(guildName);
+    const guild = guilds.find(g => g.Name.toLowerCase() === guildName.toLowerCase());
+    if (!guild) {
+      guildMembers = [];
+      return false;
     }
+    const memberRes = await fetch(`https://corsproxy.io/?https://gameinfo-ams.albiononline.com/api/gameinfo/guilds/${guild.Id}/members`);
+    const members = await memberRes.json();
+    guildMembers = members.map(m => m.Name).sort();
+    return true;
+  } catch {
+    guildMembers = [];
+    return false;
   }
+}
 
-  function formatNumber(num) {
+function createAutocomplete(input, sourceList, onSelect) {
+  let list;
+  input.addEventListener("input", function () {
+    const val = this.value.toLowerCase();
+    if (list) list.remove();
+
+    list = document.createElement("div");
+    list.classList.add(sourceList === guildMembers ? "autocomplete-list" : "guild-autocomplete");
+    this.parentNode.appendChild(list);
+
+    const matches = sourceList
+      .filter(name => name.toLowerCase().includes(val))
+      .slice(0, 20);
+
+    if (matches.length === 0) {
+      const noResult = document.createElement("div");
+      noResult.classList.add("autocomplete-item");
+      noResult.textContent = "Aucun résultat";
+      noResult.style.color = "#888";
+      noResult.style.cursor = "default";
+      list.appendChild(noResult);
+      return;
+    }
+
+    matches.forEach(name => {
+      const item = document.createElement("div");
+      item.classList.add("autocomplete-item");
+      item.textContent = name;
+      item.onclick = () => {
+        input.value = name;
+        list.remove();
+        if (onSelect) onSelect(name);
+      };
+      list.appendChild(item);
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    if (list && e.target !== input) list.remove();
+  });
+}
+
+
+function formatNumber(num) {
   return num.toLocaleString('fr-FR').replace(/\s/g, '\u00A0');
-  }
+}
 
+function addMember(name = '') {
+  const membersList = document.getElementById('membersList');
+  const div = document.createElement('div');
+  div.className = 'member-entry';
+  div.dataset.id = memberId;
 
-  function addMember(name = '') {
-    const membersList = document.getElementById('membersList');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Nom du membre';
+  input.value = name;
+  createAutocomplete(input, guildMembers, () => updateRepairDropdown());
+  input.addEventListener('input', () => updateRepairDropdown());
 
-    const div = document.createElement('div');
-    div.className = 'member-entry';
-    div.dataset.id = memberId;
+  const remove = document.createElement('button');
+  remove.textContent = 'X';
+  remove.className = 'remove-btn';
+  remove.onclick = () => div.remove();
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Nom du membre';
-    input.value = name;
-    input.setAttribute('list', 'member-suggestions');
-    input.addEventListener('input', () => updateRepairDropdown());
+  div.appendChild(input);
+  div.appendChild(remove);
+  membersList.appendChild(div);
 
-    const remove = document.createElement('button');
-    remove.textContent = 'X';
-    remove.className = 'remove-btn';
-    remove.onclick = () => div.remove();
+  memberId++;
+}
 
-    div.appendChild(input);
-    div.appendChild(remove);
-    membersList.appendChild(div);
-
-    memberId++;
-  }
-
-  function updateRepairDropdown() {
+function updateRepairDropdown() {
   const select = document.getElementById('repairTarget');
   const memberInputs = document.querySelectorAll('#membersList input[type="text"]');
-
   const currentValue = select.value;
   select.innerHTML = '<option value="">-- Aucun --</option>';
 
@@ -80,7 +124,7 @@ let memberId = 0;
   });
 }
 
-  function calculateSplit() {
+function calculateSplit() {
   const total = parseFloat(document.getElementById('chestTotal').value);
   const repairCost = parseFloat(document.getElementById('repairCost').value) || 0;
   const repairTarget = document.getElementById('repairTarget').value;
@@ -103,7 +147,6 @@ let memberId = 0;
 
   const totalAfterRepair = total - repairCost;
   const split = totalAfterRepair / names.length;
-  const formattedSplit = formatNumber(split.toFixed(2));
   const header = document.createElement('h2');
   result.appendChild(header);
 
@@ -117,14 +160,9 @@ let memberId = 0;
 
     const label = document.createElement('label');
     let payout = split;
+    if (repairTarget && name === repairTarget) payout += repairCost;
 
-    if (repairTarget && name === repairTarget) {
-      payout += repairCost;
-      label.textContent = `${name} (Remboursé) - ${formatNumber(Math.round(payout))} Silver`;
-    } else {
-      label.textContent = `${name} - ${formatNumber(Math.round(payout))} Silver`;
-    }
-
+    label.textContent = `${name}${repairTarget && name === repairTarget ? ' (Remboursé)' : ''} - ${formatNumber(Math.round(payout))} Silver`;
     label.htmlFor = checkbox.id;
 
     checkbox.addEventListener('change', () => {
@@ -137,4 +175,22 @@ let memberId = 0;
   });
 }
 
-  window.addEventListener('DOMContentLoaded', fetchGuildMembers);
+document.addEventListener("DOMContentLoaded", () => {
+  const guildInput = document.getElementById("guildName");
+  const guildStatus = document.getElementById("guildStatus");
+
+  let timeout;
+  guildInput.addEventListener("input", () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(async () => {
+      const guildList = await searchGuilds(guildInput.value);
+      createAutocomplete(guildInput, guildList.map(g => g.Name), async (selected) => {
+        guildInput.value = selected;
+        const valid = await fetchGuildMembers(selected);
+        guildStatus.textContent = valid ? "✅" : "❌";
+      });
+      const valid = await fetchGuildMembers(guildInput.value);
+      guildStatus.textContent = valid ? "✅" : "❌";
+    }, 300);
+  });
+});
